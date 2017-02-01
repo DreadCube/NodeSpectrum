@@ -1,0 +1,13 @@
+{
+  "name": "Nodeizer",
+  "version": "1.0.0",
+  "description": "Javascript Audio Spektrum",
+  "main": "index.js",
+  "scripts": {},
+  "author": "Alexander Hofer",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.13.3",
+    "socket.io": "^1.7.2"
+  }
+}

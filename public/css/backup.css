@@ -1,0 +1,212 @@
+@font-face
+{
+    src: url('fonts/Pacifico.ttf');
+    font-family: Pacifico;
+}
+
+body
+{
+	overflow: hidden;
+}
+
+.box
+{
+    overflow-y: scroll;
+	position: absolute;
+	width: 20%;
+	height: 97%;
+	background-color: white;
+    border: solid 5px black;
+    border-radius: 5px;
+    font-family: Pacifico;
+}
+
+.boxRight
+{
+    left: 79%;
+}
+
+.box::-webkit-scrollbar
+{
+    width: 1em;
+}
+ 
+.box::-webkit-scrollbar-track
+{
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+}
+ 
+.box::-webkit-scrollbar-thumb
+{
+    background-color: black;
+    width: 10px;
+}
+
+.text
+{
+    font-size: 50px;
+    text-align: center;
+    display: block;
+    text-shadow: 4px 4px 2px rgba(150, 150, 150, 1);
+}
+
+.textBorder
+{
+    border-bottom: 5px solid black;
+}
+
+input[type=range]
+{
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 90%;
+}
+
+input[type=range]:focus
+{
+    outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track
+{
+    width: 90%;
+    height: 10px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 1px 1px 1px #000000;
+    background: #FFFFFF;
+    border-radius: 5px;
+    border: 1px solid #000000;
+}
+
+input[type=range]::-webkit-slider-thumb
+{
+    box-shadow: 1px 1px 4px #000000;
+    border: 1px solid #000000;
+    height: 30px;
+    width: 20px;
+    border-radius: 8px;
+    background: #FFFFFF;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -11px;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track
+{
+    background: #FFFFFF;
+}
+
+input[type=range]::-moz-range-track
+{
+    width: 90%;
+    height: 10px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 1px 1px 1px #000000;
+    background: #FFFFFF;
+    border-radius: 5px;
+    border: 1px solid #000000;
+}
+
+input[type=range]::-moz-range-thumb
+{
+    box-shadow: 1px 1px 4px #000000;
+    border: 1px solid #000000;
+    height: 30px;
+    width: 20px;
+    border-radius: 8px;
+    background: #FFFFFF;
+    cursor: pointer;
+}
+
+input[type=range]::-ms-track
+{
+    width: 90%;
+    height: 10px;
+    cursor: pointer;
+    animate: 0.2s;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower
+{
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px #000000;
+}
+
+input[type=range]::-ms-fill-upper
+{
+    background: #FFFFFF;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    box-shadow: 1px 1px 1px #000000;
+}
+
+input[type=range]::-ms-thumb
+{
+    box-shadow: 1px 1px 4px #000000;
+    border: 1px solid #000000;
+    height: 30px;
+    width: 20px;
+    border-radius: 8px;
+    background: #FFFFFF;
+    cursor: pointer;
+}
+
+input[type=range]:focus::-ms-fill-lower
+{
+    background: #FFFFFF;
+}
+
+input[type=range]:focus::-ms-fill-upper
+{
+    background: #FFFFFF;
+}
+
+input[type=checkbox]
+{
+    width: 90%;
+    height: 25px;
+    border: 1px solid #000000;
+    border-radius: 10px;
+    background-color: white;
+}
+
+select, option, input[type=text], button
+{
+    width: 90%;
+    font-family: Pacifico;
+    font-size: 20px;
+    box-shadow: 1px 1px 2px #000000;
+    border: 1px solid #000000;
+    border-radius: 10px;
+}
+
+button
+{
+    width: 40%;
+    height: 50px;
+    margin-top: 10px;
+    background-color: white;
+}
+
+.sp-container
+{
+    border: none;
+    background-color: white;
+}
+
+.sp-palette-container
+{
+    border: none;
+}
+
+.sp-palette-container, .sp-picker-container
+{
+    margin-left: 25%;
+}
