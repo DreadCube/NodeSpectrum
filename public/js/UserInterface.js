@@ -83,6 +83,16 @@ var UI = {
 		spanTrack.appendChild(this.selectTrack);
 		this.AudioDiv.appendChild(spanTrack);
 
+        var spanVolume = newElement('span', {innerText:'Volume', className: 'text'});
+        var rangeVolume = newElement('input', {type: 'range', min: 0, max: 1.0, step: 0.05, defaultValue: 1, onchange: function(event)
+        {
+            AudioObject.AudioStream.volume = event.target.value;
+        }, oninput: function(event) {
+            AudioObject.AudioStream.volume = event.target.value;
+        }});
+        spanVolume.appendChild(rangeVolume);
+        this.AudioDiv.appendChild(spanVolume);
+
 		document.body.appendChild(this.AudioDiv);
 	},
 
@@ -113,7 +123,6 @@ var UI = {
 		var selectMode = newElement('select', {id: 'spektrumModeSelect', value: Canvas.Mode, onchange: function(event)
 		{
 			Canvas.Mode = event.target.value;
-			//UI.Init();
 			UI.initBasicCanvasControls();
 			UI.initModeCanvasControls();
 			Canvas.Init();

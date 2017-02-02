@@ -41,6 +41,7 @@ function loadTracks(){
 
     var playlists = getDirectories(__dirname + '/public/audio/');
     playlists.splice(playlists.indexOf('tracks.js'), 1);
+    playlists.splice(playlists.indexOf('.gitignore'), 1);
 
     var data = {};
 
