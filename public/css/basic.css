@@ -92,27 +92,21 @@
   }
 }
 
-
-
-
-
 @font-face
 {
     src: url('fonts/Geomanist.ttf');
     font-family: Geomanist;
 }
 
-body
-{
+body {
 	overflow: hidden;
 }
 
-.box
-{
+.box {
     overflow-y: scroll;
-	  position: absolute;
-	  width: 20%;
-	  height: 97%;
+	position: absolute;
+	width: 20%;
+	height: 97%;
     font-size: 12px;
     background-color: black;
     color: white;
@@ -120,13 +114,11 @@ body
     font-family: Geomanist;
 }
 
-.boxRight
-{
+.boxRight {
     left: 79%;
 }
 
-.boxBottom
-{
+.boxBottom {
     width: 50%;
     height: 200px;
     margin: 0 auto;
@@ -135,64 +127,54 @@ body
     text-align: center;
 }
 
-.boxBottom select
-{
+.boxBottom select {
     width: 20%;
     display: block;
     margin: 0 auto;
 }
 
-.box::-webkit-scrollbar
-{
+.box::-webkit-scrollbar {
     width: 1em;
 }
  
-.box::-webkit-scrollbar-track
-{
+.box::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
  
-.box::-webkit-scrollbar-thumb
-{
+.box::-webkit-scrollbar-thumb {
     background-color: white;
     width: 10px;
 }
 
-span.text
-{
+span.text {
     margin-bottom: 25px;
 }
 
-.text
-{
+.text {
     font-size: 30px;
     text-align: center;
     display: block;
     text-transform: uppercase;
 }
 
-.textBorder
-{
+.textBorder {
     border-bottom: 1px solid white;
     margin: 0 auto;
     text-align: center;
     width: 50%;
 }
 
-input[type=range]
-{
+input[type=range] {
     -webkit-appearance: none;
     margin: 10px 0;
     width: 90%;
 }
 
-input[type=range]:focus
-{
+input[type=range]:focus {
     outline: none;
 }
 
-input[type=range]::-webkit-slider-runnable-track
-{
+input[type=range]::-webkit-slider-runnable-track {
     width: 90%;
     height: 1px;
     cursor: pointer;
@@ -201,8 +183,7 @@ input[type=range]::-webkit-slider-runnable-track
     background: #FFFFFF;
 }
 
-input[type=range]::-webkit-slider-thumb
-{
+input[type=range]::-webkit-slider-thumb {
     box-shadow: 1px 1px 4px #000000;
     height: 20px;
     width: 12px;
@@ -212,13 +193,11 @@ input[type=range]::-webkit-slider-thumb
     margin-top: -10px;
 }
 
-input[type=range]:focus::-webkit-slider-runnable-track
-{
+input[type=range]:focus::-webkit-slider-runnable-track {
     background: #FFFFFF;
 }
 
-input[type=range]::-moz-range-track
-{
+input[type=range]::-moz-range-track {
     width: 90%;
     height: 1px;
     cursor: pointer;
@@ -227,8 +206,7 @@ input[type=range]::-moz-range-track
     background: #FFFFFF;
 }
 
-input[type=range]::-moz-range-thumb
-{
+input[type=range]::-moz-range-thumb {
     box-shadow: 1px 1px 4px #000000;
     height: 20px;
     width: 12px;
@@ -238,8 +216,7 @@ input[type=range]::-moz-range-thumb
     margin-top: -10px;
 }
 
-input[type=range]::-ms-track
-{
+input[type=range]::-ms-track {
     width: 90%;
     height: 1px;
     cursor: pointer;
@@ -248,24 +225,21 @@ input[type=range]::-ms-track
     background: #FFFFFF;
 }
 
-input[type=range]::-ms-fill-lower
-{
+input[type=range]::-ms-fill-lower {
     background: #FFFFFF;
     border: 1px solid #000000;
     border-radius: 10px;
     box-shadow: 1px 1px 1px #000000;
 }
 
-input[type=range]::-ms-fill-upper
-{
+input[type=range]::-ms-fill-upper {
     background: #FFFFFF;
     border: 1px solid #000000;
     border-radius: 10px;
     box-shadow: 1px 1px 1px #000000;
 }
 
-input[type=range]::-ms-thumb
-{
+input[type=range]::-ms-thumb {
     box-shadow: 1px 1px 4px #000000;
     height: 20px;
     width: 12px;
@@ -275,26 +249,22 @@ input[type=range]::-ms-thumb
     margin-top: -10px;
 }
 
-input[type=range]:focus::-ms-fill-lower
-{
+input[type=range]:focus::-ms-fill-lower {
     background: #FFFFFF;
 }
 
-input[type=range]:focus::-ms-fill-upper
-{
+input[type=range]:focus::-ms-fill-upper {
     background: #FFFFFF;
 }
 
-input[type=checkbox]
-{
+input[type=checkbox] {
     width: 90%;
     height: 25px;
     border: 1px solid white;
     border-radius: 10px;
 }
 
-select, option, input[type=text], button
-{
+select, option, input[type=text], button {
     width: 90%;
     font-family: Geomanist;
     font-size: 20px;
@@ -303,31 +273,26 @@ select, option, input[type=text], button
     color: white;
 }
 
-option
-{
+option {
     background-color: black;
 }
 
-button
-{
+button {
     width: 40%;
     height: 50px;
     margin-top: 10px;
 }
 
-.sp-container
-{
+.sp-container {
     border: none;
     background-color: transparent;
 }
 
-.sp-palette-container
-{
+.sp-palette-container {
     border: none;
 }
 
-.sp-palette-container, .sp-picker-container
-{
+.sp-palette-container, .sp-picker-container {
     margin-left: 25%;
 }
 
