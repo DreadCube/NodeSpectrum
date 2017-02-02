@@ -26,17 +26,18 @@ var UI = {
 
 		this.ConnectionDiv = newElement('div', {className: 'box boxBottom'});
 		this.ConnectionDiv.appendChild(newElement('span', {className: 'text textBorder', innerText: 'Socket'}));
-	
+
 		var modeSpan = newElement('span', {innerText: 'Mode', className: 'text'});
 		var selectMode = newElement('select', {onchange: function(event)
 		{
-            switch(selectMode.children[selectMode.selectedIndex].value)
-            {
-                case 'Host':  Socket.Host(); break;
-                case 'Join':  Socket.Join(); break;
-                default: Socket.Leave();
-            }
-        }});
+			Socket.Disconnect();
+		    switch(selectMode.children[selectMode.selectedIndex].value)
+		    {
+		        case 'Host':  Socket.Host(); break;
+		        case 'Join':  Socket.Join(); break;
+		        default: break;
+		    }
+		}});
 		selectMode.appendChild(newElement('option', {value: 'None', innerText: 'None'}));
 		selectMode.appendChild(newElement('option', {value: 'Host', innerText: 'Host'}));
 		selectMode.appendChild(newElement('option', {value: 'Join', innerText: 'Join'}));
@@ -48,11 +49,11 @@ var UI = {
 
 	initBasicAudioControls: function() {
 		var that = this;
-		this.AudioDiv = newElement('div', {className: 'box'});
+		this.AudioDiv = newElement('div', {className: 'box boxLeft'});
 		this.AudioDiv.appendChild(newElement('span', {className: 'text textBorder', innerText: 'Audio'}));
 		
 		var modeSpan = newElement('span', {innerText: 'Mode', className: 'text'});
-		var selectMode = newElement('select');
+		var selectMode = newElement('select', {id: 'audioModeSelect'});
 		var opt = newElement('option', {value: 'Local', innerText: 'Local'});
 		selectMode.appendChild(opt);
 		modeSpan.appendChild(selectMode);
@@ -61,7 +62,7 @@ var UI = {
 		var spanPlaylist = newElement('span', {innerText: 'Playlist', className: 'text'});
 		this.selectPlaylist = newElement('select', {id: 'selectPlaylist', onchange: function(event)
 		{
-			var data = Audio[AudioObject.Mode].Data;
+			var data = AudioObject[AudioObject.Mode].Data;
 			var tracks = data[event.target.value];
 			that.selectTrack.innerHTML = '';
 			for(var i = 0; i < tracks.length; i++)
@@ -69,7 +70,7 @@ var UI = {
 				var optionTrack = newElement('option', {value: tracks[i]['src'], innerText: tracks[i]['name']});
 				that.selectTrack.appendChild(optionTrack);
 			}
-			Audio[AudioObject.Mode].playTrack(tracks[0]['src']);
+			AudioObject[AudioObject.Mode].playTrack(tracks[0]['src']);
 		}});
 		spanPlaylist.appendChild(this.selectPlaylist);
 		this.AudioDiv.appendChild(spanPlaylist);
@@ -77,7 +78,7 @@ var UI = {
 		var spanTrack = newElement('span', {innerText: 'Track', className: 'text'});
 		this.selectTrack = newElement('select', {id: 'selectTrack', onchange: function(event)
 		{
-			Audio[AudioObject.Mode].playTrack(event.target.value);
+			AudioObject[AudioObject.Mode].playTrack(event.target.value);
 		}});
 		spanTrack.appendChild(this.selectTrack);
 		this.AudioDiv.appendChild(spanTrack);
@@ -177,12 +178,12 @@ var UI = {
 			if(event.keyCode === 32) {
 				if(active === true) {
 					UI.mainDiv.className = 'box boxRight animated fadeOut';
-					UI.AudioDiv.className = 'box animated fadeOut';
+					UI.AudioDiv.className = 'box boxLeft animated fadeOut';
 					UI.ConnectionDiv.className = 'box boxBottom animated fadeOut';
 					active = false;
 				} else {
 					UI.mainDiv.className = 'box boxRight animated fadeIn';
-					UI.AudioDiv.className = 'box animated fadeIn';				
+					UI.AudioDiv.className = 'box boxLeft animated fadeIn';				
 					UI.ConnectionDiv.className = 'box boxBottom animated fadeIn';
 					active = true;
 				}

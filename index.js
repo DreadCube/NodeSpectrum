@@ -23,6 +23,12 @@ io.on('connection', function(socket) {
         this.join(room);
         socket.emit('JoinReady');
     });
+
+    socket.on('Leave', function(room)
+    {
+        this.leave(room);
+        socket.emit('LeaveReady');
+    });
 });
 
 function getDirectories(srcpath) {

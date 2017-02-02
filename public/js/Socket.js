@@ -1,12 +1,11 @@
 // socket object
 var Socket = {
-	socket: null,
-	status: null,
-	room: null,
-	hostData: null,
 
     Init: function() {
     	this.socket = io();
+        this.status = null;
+        this.room = null;
+        this.hostData = null;
     },
     Host: function() {
 
@@ -46,10 +45,34 @@ var Socket = {
     		}
     		UI.ConnectionDiv.appendChild(JoinSpan);
     		UI.ConnectionDiv.appendChild(JoinSelect);
+            Socket.status = 'Join';
     	});
 
     	this.socket.on('JoinReady', function() {
     		Socket.status = 'Joined';
+
+            // todo: disabling content of stream type
+            /*$('.box.boxLeft select').each(function(i, elem)
+            {
+                $('#'+elem.id).attr('disabled', true);
+            });*/
     	});
+    },
+    Disconnect: function() {
+        if(this.socket) {
+            this.socket.disconnect();
+            if(this.status === 'Hosting') {
+                UI.ConnectionDiv.removeChild(UI.ConnectionDiv.lastElementChild);
+            }
+            if(this.status === 'Join' || this.status === 'Joined') {
+                UI.ConnectionDiv.removeChild(UI.ConnectionDiv.lastElementChild);
+                UI.ConnectionDiv.removeChild(UI.ConnectionDiv.lastElementChild);
+            }
+
+            this.socket = null;
+            this.status = null;
+            this.room = null;
+            this.hostData = null;
+        }
     }
 };

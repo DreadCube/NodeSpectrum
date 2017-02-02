@@ -1,1 +1,1 @@
-var globalLocalTracks = {"Playlist1":[{"src":"../audio/Playlist1/Stryv - Storm (Original Mix) FREE Creative Commons Music.mp3","name":"Stryv - Storm (Original Mix) FREE Creative Commons Music.mp3"}]};
+var globalLocalTracks = {"Playlist1":[{"src":"../audio/Playlist1/Stryv - Storm (Original Mix) FREE Creative Commons Music.mp3","name":"Stryv - Storm (Original Mix) FREE Creative Commons Music.mp3"}],"Playlist2":[{"src":"../audio/Playlist2/Broccoli - D.R.A.M. feat. Lil Yachty (Lyrics).mp3","name":"Broccoli - D.R.A.M. feat. Lil Yachty (Lyrics).mp3"}]};
