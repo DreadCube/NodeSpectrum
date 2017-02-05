@@ -1,6 +1,7 @@
 // UI object (user interface)
 var UI = {
 	setAudioInformation: function(data, playTrack) {
+
 		this.selectPlaylist.innerHTML = '';
 		this.selectTrack.innerHTML = '';
 		for(var playlist in data)
@@ -17,7 +18,7 @@ var UI = {
 		}
 		if(playTrack)
 		{
-			AudioObject.playTrack(tracks[0]['src']);
+			AudioObject.Local.playTrack(tracks[0]['src']);
 		}
 	},
 
@@ -53,12 +54,37 @@ var UI = {
 		this.AudioDiv.appendChild(newElement('span', {className: 'text textBorder', innerText: 'Audio'}));
 		
 		var modeSpan = newElement('span', {innerText: 'Mode', className: 'text'});
-		var selectMode = newElement('select', {id: 'audioModeSelect'});
-		var opt = newElement('option', {value: 'Local', innerText: 'Local'});
-		selectMode.appendChild(opt);
+		var selectMode = newElement('select', {id: 'audioModeSelect', onchange: function() {
+			that.cleanup(AudioObject.Mode);
+			AudioObject.Mode = this.children[this.selectedIndex].value;
+			switch(AudioObject.Mode) {
+				case 'Local': that.initModeLocalControls(); break;
+				case 'Mic': that.initModeMicrophoneControls(); break;
+			}
+			AudioObject.Init();
+		}});
+		selectMode.appendChild(newElement('option', {value: 'Local', innerText: 'Local'}));
+		selectMode.appendChild(newElement('option', {value: 'Mic', innerText: 'Mic'}));
 		modeSpan.appendChild(selectMode);
 		this.AudioDiv.appendChild(modeSpan);
 
+        var spanVolume = newElement('span', {innerText:'Volume', className: 'text'});
+        var rangeVolume = newElement('input', {type: 'range', min: 0, max: 1.0, step: 0.05, defaultValue: 1, onchange: function(event)
+        {
+            AudioObject.AudioStream.volume = event.target.value;
+        }, oninput: function(event) {
+            AudioObject.AudioStream.volume = event.target.value;
+        }});
+        spanVolume.appendChild(rangeVolume);
+        this.AudioDiv.appendChild(spanVolume);
+
+		document.body.appendChild(this.AudioDiv);
+		this.initModeLocalControls();
+		AudioObject.Init();
+	},
+
+	initModeLocalControls: function() {
+		var that = this;
 		var spanPlaylist = newElement('span', {innerText: 'Playlist', className: 'text'});
 		this.selectPlaylist = newElement('select', {id: 'selectPlaylist', onchange: function(event)
 		{
@@ -82,20 +108,23 @@ var UI = {
 		}});
 		spanTrack.appendChild(this.selectTrack);
 		this.AudioDiv.appendChild(spanTrack);
-
-        var spanVolume = newElement('span', {innerText:'Volume', className: 'text'});
-        var rangeVolume = newElement('input', {type: 'range', min: 0, max: 1.0, step: 0.05, defaultValue: 1, onchange: function(event)
-        {
-            AudioObject.AudioStream.volume = event.target.value;
-        }, oninput: function(event) {
-            AudioObject.AudioStream.volume = event.target.value;
-        }});
-        spanVolume.appendChild(rangeVolume);
-        this.AudioDiv.appendChild(spanVolume);
-
-		document.body.appendChild(this.AudioDiv);
 	},
 
+	initModeMicrophoneControls: function()
+	{
+
+	},
+	
+	cleanup: function(target)
+	{
+		switch(target)
+		{
+			case 'Local':
+				$('#selectPlaylist').parent().remove();
+				$('#selectTrack').parent().remove();
+			break;
+		}
+	},
 
 	initBasicCanvasControls: function() {
 		var can = document.getElementsByTagName('canvas')[0];
