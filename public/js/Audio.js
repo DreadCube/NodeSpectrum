@@ -62,13 +62,12 @@ var AudioObject = {
 		},
 
 		prepareFrequencyData: function() {
-			this.ctx = new AudioContext();
-			this.analyser = this.ctx.createAnalyser();
-	  		//analyserNode.smoothingTimeConstant = 0;
-	   		///   analyserNode.fftSize = 2048;
-			this.source = this.ctx.createMediaElementSource(AudioObject.AudioStream);
+			var ctx = new AudioContext();
+			this.analyser = ctx.createAnalyser();
+	  		this.analyser.smoothingTimeConstant = 0.8;
+			this.source = ctx.createMediaElementSource(AudioObject.AudioStream);
 			this.source.connect(this.analyser);
-			this.analyser.connect(this.ctx.destination);
+			this.analyser.connect(ctx.destination);
 
 			this.frequencyData = new Uint8Array(this.analyser.frequencyBinCount);
 			AudioObject.analyser = this.analyser;
@@ -90,7 +89,7 @@ var AudioObject = {
 
 		    if (navigator.getUserMedia) {
 
-		        navigator.getUserMedia({audio:true}, 
+		        navigator.getUserMedia({audio: true}, 
 		          	function(stream) {
 		          		var audioContext = new AudioContext;
 		          		gainNode = audioContext.createGain();
@@ -114,40 +113,22 @@ var AudioObject = {
 		    			microphoneStream.connect(analyserNode);
 		    			analyserNode.connect(scriptProcessorNode);
 
-		    			scriptProcessorNode.onaudioprocess = function(){/*console.log('hier');
-		    				var array = new Uint8Array(analyserNode.frequencyBinCount);
-		    				analyserNode.getByteFrequencyData(fbc_array);
-		    				AudioObject.freqData = fbc_array;
-		    				*/
-		    				AudioObject.analyser = analyserNode;
-		    				AudioObject.render(analyserNode);
-		    			}
+		    			AudioObject.analyser = analyserNode;
+		    			AudioObject.render(analyserNode);
 		          	},
 		          function(e) {
 		            alert('Error capturing audio.');
 		          }
 		        );
 
-		    	} else { alert('getUserMedia not supported in this browser.'); }
-		},
-
-		processMicrophoneBuffer: function() {
-
+		    	} else { 
+		    		console.log('getUserMedia not supported in this browser.');
+		    	}
 		}
 	},
 
 	render: function() {
 		requestAnimationFrame(this.render.bind(this));
-		if(Socket.status === 'Joined' && Socket.hostData !== null) {
-			this.freqData = Socket.hostData;
-		} else {
-			fbc_array = new Uint8Array(AudioObject.analyser.frequencyBinCount);
-			AudioObject.analyser.getByteFrequencyData(fbc_array);
-			AudioObject.freqData = fbc_array;
-			if(Socket.status === 'Hosting')
-			{
-				Socket.socket.emit('HostData', JSON.stringify(fbc_array));
-			}
-		}
+		Socket.StreamData();
 	}
 };

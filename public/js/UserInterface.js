@@ -180,7 +180,7 @@ var UI = {
 
 		var selectTemplate = newElement('select', {id: 'selectTemplateInput', onchange: function(event)
 		{
-			that.loadTemplate(event.target.value);
+			that.loadTemplateByTemplateId(event.target.value);
 		}});
 
 		var templateOption = newElement('option', {id: 'none', innerHTML: 'none'});
@@ -307,10 +307,13 @@ var UI = {
 		}
 	},
 
-	loadTemplate: function(templateId) {
-		var templateData = JSON.parse(localStorage.getItem('template.'+Canvas.Mode+'.'+templateId));
-		var controls = document.getElementsByClassName('control');
+	loadTemplateByTemplateId: function(templateId) {
+		this.loadTemplate(localStorage.getItem('template.'+Canvas.Mode+'.'+templateId));
+	},
 
+	loadTemplate: function(templateData) {
+		var templateData = JSON.parse(templateData);
+		var controls = document.getElementsByClassName('control');
 		for(var control in templateData) {
 			if(typeof(templateData[control]) !== 'boolean') {
 				if(!isNaN(templateData[control])) {
@@ -327,10 +330,7 @@ var UI = {
 		this.initModeCanvasControls();
 	},
 
-	saveTemplate: function(templateId) {
-		if(templateId === '') {
-			return false;
-		}
+	currentDesignToJson: function() {
 		var templateData = {};
 		var controls = document.getElementsByClassName('control');
 
@@ -338,7 +338,15 @@ var UI = {
 			var value = (controls[i].type === 'color' ? controls[i].alt : controls[i].value);
 			templateData[controls[i].id] = (controls[i].type === 'checkbox' ? controls[i].checked : value);
 		}
-		localStorage.setItem('template.'+Canvas.Mode+'.'+templateId, JSON.stringify(templateData));
+		return JSON.stringify(templateData);
+	},
+
+	saveTemplate: function(templateId) {
+		if(templateId === '') {
+			return false;
+		}
+
+		localStorage.setItem('template.'+Canvas.Mode+'.'+templateId, this.currentDesignToJson());
 		var optionTemplate = document.createElement('option');
 		optionTemplate.id = templateId;
 		optionTemplate.innerHTML = templateId;

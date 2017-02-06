@@ -108,7 +108,7 @@ body {
 	width: 20%;
 	height: 97%;
     font-size: 12px;
-    background-color: black;
+    background-color: rgba(0, 0, 0, 0.75);
     color: white;
     border: solid 2px white;
     font-family: Geomanist;
@@ -299,4 +299,14 @@ button {
 .sp-picker-container
 {
     border: none;
+}
+
+#freqData {
+    float: left;
+    margin-left: 30%;
+}
+
+#designData {
+    float: right;
+    margin-right: 30%;
 }

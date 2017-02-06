@@ -5,7 +5,7 @@ var Socket = {
     	this.socket = io();
         this.status = null;
         this.room = null;
-        this.hostData = null;
+        this.hostData = {};
     },
     Host: function() {
 
@@ -25,6 +25,7 @@ var Socket = {
     	this.Init();
 
     	this.socket.on('HostDataReady', function(data) {
+
     		Socket.hostData = JSON.parse(data);
     	});
 
@@ -51,6 +52,16 @@ var Socket = {
     	this.socket.on('JoinReady', function() {
     		Socket.status = 'Joined';
 
+           var checkboxLabel = newElement('label', {innerText: 'Freq Data', id: 'freqData'}); 
+            Socket.checkBoxFreqData = newElement('input', {type: 'checkbox', value: 'FreqData'});
+            checkboxLabel.appendChild(Socket.checkBoxFreqData);
+            UI.ConnectionDiv.appendChild(checkboxLabel);
+
+            checkboxLabel = newElement('label', {innerText: 'Design Data', id: 'designData'}); 
+            Socket.checkBoxDesignData = newElement('input', {type: 'checkbox', value: 'designData'});
+            checkboxLabel.appendChild(Socket.checkBoxDesignData);
+            UI.ConnectionDiv.appendChild(checkboxLabel);
+
             // todo: disabling content of stream type
             /*$('.box.boxLeft select').each(function(i, elem)
             {
@@ -65,6 +76,8 @@ var Socket = {
                 UI.ConnectionDiv.removeChild(UI.ConnectionDiv.lastElementChild);
             }
             if(this.status === 'Join' || this.status === 'Joined') {
+                $('#freqData').remove();
+                $('#designData').remove();
                 UI.ConnectionDiv.removeChild(UI.ConnectionDiv.lastElementChild);
                 UI.ConnectionDiv.removeChild(UI.ConnectionDiv.lastElementChild);
             }
@@ -72,7 +85,33 @@ var Socket = {
             this.socket = null;
             this.status = null;
             this.room = null;
-            this.hostData = null;
+            this.hostData = {};
+        }
+    },
+    previousDesignData : '',
+    StreamData: function() {
+
+        fbc_array = new Uint8Array(AudioObject.analyser.frequencyBinCount);
+        AudioObject.analyser.getByteFrequencyData(fbc_array);
+        AudioObject.freqData = fbc_array;
+
+        if(Socket.status === 'Joined' && Socket.hostData !== null) {
+           
+            if(this.checkBoxFreqData.checked) {
+                AudioObject.freqData = Socket.hostData.freqData;
+            }
+            if(this.checkBoxDesignData.checked) {
+                if(this.previousDesignData !== Socket.hostData.designData) {
+                    this.previousDesignData = Socket.hostData.designData;
+                    UI.loadTemplate(Socket.hostData.designData);
+                }
+            }
+        } else {
+
+            if(Socket.status === 'Hosting')
+            {
+                Socket.socket.emit('HostData', JSON.stringify({freqData: fbc_array, designData: UI.currentDesignToJson()}));
+            }
         }
     }
 };
