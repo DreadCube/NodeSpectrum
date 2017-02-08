@@ -6,6 +6,8 @@ var path = require('path');
 var io = require('socket.io')(http);
 var Array = require('node-array');
 
+var extensionRegex = /(?:\.([^.]+))?$/;
+
 io.on('connection', function(socket) {
     var rooms = io.sockets.adapter.rooms;
     socket.emit('ConnectionReady', JSON.stringify(rooms));
@@ -51,7 +53,17 @@ function loadTracks(){
     	var dir = getDirectories(__dirname + '/public/audio/'+ playlists[i]);
 
         for(var j = 0; j < dir.length; j++) {
-            data[playlists[i]].push({src: '../audio/'+playlists[i]+'/'+dir[j], name: dir[j]});
+            if(extensionRegex.exec(dir[j])[1] === 'mp3') {
+                var subtitleContent = [];
+                var subtitlePath = __dirname + '/public/audio/'+playlists[i]+'/'+dir[j].replace(extensionRegex.exec(dir[j])[1], 'srt');
+                try {
+                    subtitleContent = fs.readFileSync(subtitlePath);
+                } catch(err) {
+                    // No file
+                }
+                subtitleContent = subtitleToJson(subtitleContent);
+                data[playlists[i]].push({src: '../audio/'+playlists[i]+'/'+dir[j], name: dir[j], subtitle: subtitleContent});
+            }
         }
     }
 
@@ -61,6 +73,53 @@ function loadTracks(){
         }
     });
 }
+
+
+function rangeToMs(range) {
+    rangeSplit = range.split(':');
+    var hours = Number(rangeSplit[0]);
+    var minutes = Number(rangeSplit[1]);
+    var seconds = Number(rangeSplit[2].replace(',', '.'));
+
+    if(hours > 0) {
+        seconds = seconds + (hours * 3600);
+    }
+    if(minutes > 0) {
+        seconds = seconds + (minutes * 60);
+    }
+    return seconds * 1000;
+}
+
+function subtitleToJson(content) {
+    content = content.toString();
+    var lines = content.split('\n');
+    var output = [];
+    var buffer = {
+        content: ''
+    };
+    var that = this;
+    lines.forEach(function(line) {
+
+        line = line.replace('\r', '');
+        if(!buffer.id) {
+            buffer.id = line;
+        } else if(!buffer.start) {
+            var range = line.split(' -->');
+            buffer.start = rangeToMs(range[0]);
+            buffer.end = rangeToMs(range[1]);
+        }
+        else if(line !== '') {
+            buffer.content = buffer.content + ' ' + line;
+        }
+        else {
+            output.push(buffer);
+            buffer = {content: '' };
+        }
+    });
+    return output;
+}
+
+
 
 setInterval(function() {
     loadTracks();

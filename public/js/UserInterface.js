@@ -55,13 +55,14 @@ var UI = {
 		
 		var modeSpan = newElement('span', {innerText: 'Mode', className: 'text'});
 		var selectMode = newElement('select', {id: 'audioModeSelect', onchange: function() {
-			that.cleanup(AudioObject.Mode);
+			AudioObject.cleanup();
+			that.cleanup();
 			AudioObject.Mode = this.children[this.selectedIndex].value;
 			switch(AudioObject.Mode) {
 				case 'Local': that.initModeLocalControls(); break;
-				case 'Mic': that.initModeMicrophoneControls(); break;
 			}
 			AudioObject.Init();
+			AudioObject[AudioObject.Mode].setVolume(that.rangeVolume.value);
 		}});
 		selectMode.appendChild(newElement('option', {value: 'Local', innerText: 'Local'}));
 		selectMode.appendChild(newElement('option', {value: 'Mic', innerText: 'Mic'}));
@@ -69,13 +70,13 @@ var UI = {
 		this.AudioDiv.appendChild(modeSpan);
 
         var spanVolume = newElement('span', {innerText:'Volume', className: 'text'});
-        var rangeVolume = newElement('input', {type: 'range', min: 0, max: 1.0, step: 0.05, defaultValue: 1, onchange: function(event)
+        this.rangeVolume = newElement('input', {type: 'range', min: 0, max: 1.0, step: 0.05, defaultValue: 1, onchange: function(event)
         {
-            AudioObject.AudioStream.volume = event.target.value;
+        	AudioObject[AudioObject.Mode].setVolume(event.target.value);
         }, oninput: function(event) {
-            AudioObject.AudioStream.volume = event.target.value;
+        	AudioObject[AudioObject.Mode].setVolume(event.target.value);
         }});
-        spanVolume.appendChild(rangeVolume);
+        spanVolume.appendChild(this.rangeVolume);
         this.AudioDiv.appendChild(spanVolume);
 
 		document.body.appendChild(this.AudioDiv);
@@ -109,15 +110,10 @@ var UI = {
 		spanTrack.appendChild(this.selectTrack);
 		this.AudioDiv.appendChild(spanTrack);
 	},
-
-	initModeMicrophoneControls: function()
-	{
-
-	},
 	
-	cleanup: function(target)
+	cleanup: function()
 	{
-		switch(target)
+		switch(AudioObject.Mode)
 		{
 			case 'Local':
 				$('#selectPlaylist').parent().remove();
