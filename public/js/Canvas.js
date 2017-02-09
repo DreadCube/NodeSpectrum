@@ -48,7 +48,7 @@ var Canvas = {
 			mesh.name = 'subtitles';
 			mesh.position.x = Canvas.Camera.position.x,
 			mesh.position.y = Canvas.Camera.position.y - 30;
-			mesh.position.z = Canvas.Camera.position.z - 100;
+			mesh.position.z = Canvas.Camera.position.z - 50;
 
 			scene.add(mesh);
 		});
@@ -233,7 +233,7 @@ var Canvas = {
 				var opt = {
 					textGeometry: {
 						size: this.Controls.subtitleFontSize.value,
-						height: 1,
+						height: 0,
 						curveSegments: 2
 					},					
 					font: 'Geomanist.json',
