@@ -109,8 +109,60 @@ var UI = {
 		}});
 		spanTrack.appendChild(this.selectTrack);
 		this.AudioDiv.appendChild(spanTrack);
+
+		var spanSubtitles = newElement('span', {innerText: 'Subtitles', className: 'text'});
+		var checkboxSubtitles = newElement('input', {type: 'checkbox', id: 'checkboxSubtitles', onclick: function(event) {
+			if(event.target.checked)
+			{
+				UI.enableSubtitles();
+			}
+			else
+			{
+				UI.disableSubtitles();
+			}
+		}});
+		spanSubtitles.appendChild(checkboxSubtitles);
+		this.AudioDiv.appendChild(spanSubtitles);
 	},
-	
+
+	enableSubtitles: function()
+	{
+		UI.prevSubtitles = null;
+		UI.subtitleTimestamp = 0;
+		$('.boxBottom').before('<div class="subtitleBox"></div>');
+		UI.subtitleInterval = setInterval(function(){
+
+			if(UI.prevSubtitles != AudioObject.subtitle)
+			{
+				UI.subtitleTimestamp = 0;
+				$('.subtitleBox').addClass('animated fadeInUp');
+				$('.subtitleBox').one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
+				function(e) {
+					$('.subtitleBox').removeClass('animated fadeInUp');
+				});
+				$('.subtitleBox').text(AudioObject.subtitle);
+				UI.prevSubtitles = AudioObject.subtitle;
+			}
+			if(UI.subtitleTimestamp == 5000)
+			{
+				UI.subtitleTimestamp = 0;
+				$('.subtitleBox').addClass('animated fadeOutDown');
+				$('.subtitleBox').one('webkitAnimationEnd oanimationend msAnimationEnd animationend',
+				function(e) {
+					$('.subtitleBox').text('');
+					$('.subtitleBox').removeClass('animated fadeOutDown');
+				});
+			}
+			UI.subtitleTimestamp += 50;
+		}, 50);
+	},
+
+	disableSubtitles: function()
+	{
+		$('.subtitleBox').remove();
+		clearInterval(UI.subtitleInterval);
+	},
+
 	cleanup: function()
 	{
 		switch(AudioObject.Mode)
@@ -118,6 +170,10 @@ var UI = {
 			case 'Local':
 				$('#selectPlaylist').parent().remove();
 				$('#selectTrack').parent().remove();
+
+				// Subtitles
+				this.disableSubtitles();
+				$('#checkboxSubtitles').parent().remove();
 			break;
 		}
 	},

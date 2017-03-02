@@ -1,7 +1,6 @@
 // canvas object
 var Canvas = {
 	Mode: 'Bars',
-	prevSubtitle: null,
 
 	Init: function() {
 		if(this.RequestId) {
@@ -22,36 +21,6 @@ var Canvas = {
 		Canvas.Camera.aspect = window.innerWidth / window.innerHeight;
 		Canvas.Camera.updateProjectionMatrix();
 		Canvas.Renderer.setSize( window.innerWidth, window.innerHeight );
-	},
-
-	createSubtitleObject: function(text, options, scene) {
-		var loader = new THREE.FontLoader();
-
-		var that = this;
-		this.text = text;
-		this.options = options;
-		loader.load( 'css/fonts/'+this.options.font, function ( font ) {
-
-			var text = that.text;
-			that.options.textGeometry.font = font;
-			var geometry = new THREE.TextGeometry(text, that.options.textGeometry);
-			geometry.center();
-			//THREE.GeometryUtils.geometry.center(geometry);
-			geometry.computeBoundingBox();
-
-				var material = new THREE.MultiMaterial( [
-					new THREE.MeshBasicMaterial( { color: that.options.color, overdraw: 0.5 } ),
-					new THREE.MeshBasicMaterial( { color: 0x000000, overdraw: 0.5 } )
-				] );
-
-			var mesh = new THREE.Mesh(geometry, material);
-			mesh.name = 'subtitles';
-			mesh.position.x = Canvas.Camera.position.x,
-			mesh.position.y = Canvas.Camera.position.y - 30;
-			mesh.position.z = Canvas.Camera.position.z - 50;
-
-			scene.add(mesh);
-		});
 	},
 
 	Bars: {
@@ -153,29 +122,6 @@ var Canvas = {
 				value: false,
 				label: 'Wireframe',
 				changeEvent: true
-			},
-
-			subtitle: {
-				type: 'checkbox',
-				value: false,
-				label: 'Subtitles',
-				changeEvent: true
-			},
-
-			subtitleColor: {
-				type: 'color',
-				value: '#00FF00',
-				label: 'Subtitle Color',
-				changeEvent: true
-			},
-
-			subtitleFontSize: {
-				type: 'range',
-				min: 1,
-				max: 20,
-				value: 5,
-				label: 'Subtitle Font Size',
-				changeEvent: true
 			}
 		},
 
@@ -214,46 +160,13 @@ var Canvas = {
 				Canvas.Scene.add(obj);
 			}
 			Canvas.prevSubtitle = '';
-			this.addSubtitleObject();
 		},
 
-		addSubtitleObject: function(){
-
-			var childs = Canvas.Scene.children;
-			for(var i = 0; i < childs.length; i++) {
-				if(childs[i].name === 'subtitles') {
-					if(AudioObject.subtitle !== Canvas.prevSubtitle) {
-						Canvas.Scene.remove(childs[i]);
-					}
-					continue;
-				}
-			}
-
-			if(AudioObject.subtitle && AudioObject.subtitle !== Canvas.prevSubtitle && this.Controls.subtitle.value){				
-				var opt = {
-					textGeometry: {
-						size: this.Controls.subtitleFontSize.value,
-						height: 0,
-						curveSegments: 2
-					},					
-					font: 'Geomanist.json',
-					color: this.Controls.subtitleColor.value
-				};
-				Canvas.createSubtitleObject(AudioObject.subtitle, opt, Canvas.Scene);
-				Canvas.prevSubtitle = AudioObject.subtitle;
-			}
-		},
 		render: function() {
 			Canvas.RequestId = requestAnimationFrame(this.render.bind(this));
 
 			var childs = Canvas.Scene.children;
 			for(var i = 0; i < childs.length; i++) {
-				if(childs[i].name === 'subtitles') {
-					if(AudioObject.subtitle !== Canvas.prevSubtitle) {
-						Canvas.Scene.remove(childs[i]);
-					}
-					continue;
-				}
 				// Rotation
 				childs[i].rotation.x = childs[i].rotation.x + (this.Controls.rotSpeedX.value / 1000);
 				childs[i].rotation.y = childs[i].rotation.y + (this.Controls.rotSpeedY.value / 1000);
@@ -266,7 +179,6 @@ var Canvas = {
 				childs[i].material.color.set(this.Controls.barsColor.value);
 			}
 
-			this.addSubtitleObject();
 			document.body.style.backgroundColor = this.Controls.barsBackgroundColor.value;
 			Canvas.Scene.background = new THREE.Color(this.Controls.barsBackgroundColor.value);
 

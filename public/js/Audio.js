@@ -63,6 +63,8 @@ var AudioObject = {
 							for(var j = 0; j < current.subtitle.length; j++) {
 								if(current.subtitle[j].start <= timestamp && current.subtitle[j].end >= timestamp){
 									AudioObject.subtitle = current.subtitle[j].content;
+									AudioObject.subtitleFull = current.subtitle[j];
+									AudioObject.subtitleIndex = j;
 									return;
 								}
 							}
